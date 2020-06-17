@@ -9,7 +9,7 @@
 import UIKit
 
 class TableViewController: UIViewController {
-    // MARK: - Variables
+  // MARK: - Variables
   private var toDoItems: [String] {
     set {
       UserDefaults.standard.set(newValue, forKey: "ToDoKey")
@@ -26,28 +26,29 @@ class TableViewController: UIViewController {
   
   // MARK: - GUI Variables
   private lazy var tableView: UITableView = {
-        let table = UITableView()
-        table.delegate = self
-        table.dataSource = self
-        table.register(CustomTableViewCell.self,
-                       forCellReuseIdentifier: CustomTableViewCell.reuseIdentifier)
-      table.separatorStyle = .singleLine
-        table.tableFooterView = UIView()
-        table.translatesAutoresizingMaskIntoConstraints = false
-
-        return table
-    }()
-
+    let table = UITableView()
+    table.delegate = self
+    table.dataSource = self
+    table.register(CustomTableViewCell.self,
+                   forCellReuseIdentifier: CustomTableViewCell.reuseIdentifier)
+    table.separatorStyle = .singleLine
+    table.tableFooterView = UIView()
+    table.translatesAutoresizingMaskIntoConstraints = false
+    
+    return table
+  }()
+  
   // MARK: - Life Cycle
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    self.navigationItem.title = "To Do"
     self.view.addSubview(self.tableView)
     
     self.setUpNavigationBar()
     self.setUpConstraints()
   }
-
+  
   // MARK: - Constraints
   private func setUpConstraints() {
     NSLayoutConstraint.activate([
@@ -120,17 +121,14 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource {
       
     }
   }
-    
-    
-//  func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-//    true
-//  }
   
-//  func tableView(_ tableView: UITableView,
-//                 moveRowAt sourceIndexPath: IndexPath,
-//                 to destinationIndexPath: IndexPath) {
-//    self.model.swapAt(sourceIndexPath.row, destinationIndexPath.row)
-//    //      TODO: - save your updated model to storage here
-//
-//  }
+  func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+    true
+  }
+  
+  func tableView(_ tableView: UITableView,
+                 moveRowAt sourceIndexPath: IndexPath,
+                 to destinationIndexPath: IndexPath) {
+    self.toDoItems.swapAt(sourceIndexPath.row, destinationIndexPath.row)
+  }
 }

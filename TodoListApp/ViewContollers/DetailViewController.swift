@@ -125,6 +125,8 @@ class DetailViewController: UIViewController {
 //  MARK: - Life Cycle
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    self.navigationItem.title = "Detail"
     self.view.backgroundColor = .systemGray5
     self.view.addSubview(self.containerView)
     self.containerView.addSubview(self.taskName)

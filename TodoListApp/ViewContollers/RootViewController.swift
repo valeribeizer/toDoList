@@ -33,14 +33,15 @@ class RootViewController: UIViewController {
    }()
    
    // MARK: - Life Cycle
-   override func viewDidLoad() {
-     super.viewDidLoad()
-     
-     self.view.backgroundColor = .systemGray5
-     self.view.addSubview(self.customView)
-     self.view.addSubview(self.continueButton)
-     self.setUpConstraints()
-   }
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    self.navigationItem.title = "Welcome"
+    self.view.backgroundColor = .systemGray5
+    self.view.addSubview(self.customView)
+    self.view.addSubview(self.continueButton)
+    self.setUpConstraints()
+  }
    
    // MARK: - Constraints
    private func setUpConstraints() {
