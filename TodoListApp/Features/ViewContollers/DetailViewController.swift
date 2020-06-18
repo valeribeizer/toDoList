@@ -9,13 +9,18 @@
 import UIKit
 
 class DetailViewController: UIViewController {
-//  MARK: - Variables
+  // MARK: - Variables
   private let edgeInsets: UIEdgeInsets = UIEdgeInsets(top: 85, left: 10, bottom: 10, right: 10)
+  private let textSize: CGFloat = 18
+  var model: [TDLModel]?
+  var task: TDLModel?
+  var indexOfItem: Int = 0
+  var delegate: TaskDelegate?
   
-//  MARK: - GUI Variables
+  // MARK: - GUI Variables
   private (set) lazy var containerView: UIView = {
     let view = UIView()
-    view.backgroundColor = UIColor(named: "lightYellow")
+    view.backgroundColor = UIColor(named: Localization.customColor.rawValue)
     view.translatesAutoresizingMaskIntoConstraints = false
     
     return view
@@ -23,9 +28,9 @@ class DetailViewController: UIViewController {
   
   private (set) lazy var taskName: UILabel = {
     let label = UILabel()
-    label.text = "TASK:"
+    label.text = Localization.taskName.rawValue
     label.textAlignment = .left
-    label.font = UIFont(name: "Apple SD Gothic Neo", size: 18)
+    label.font = UIFont(name: Localization.font.rawValue, size: self.textSize)
     label.textColor = .darkGray
     label.translatesAutoresizingMaskIntoConstraints = false
     
@@ -33,21 +38,21 @@ class DetailViewController: UIViewController {
   }()
   
   private (set) lazy var descriptionName: UILabel = {
-     let label = UILabel()
-     label.text = "DESCRIPTION:"
-     label.textAlignment = .left
-     label.font = UIFont(name: "Apple SD Gothic Neo", size: 18)
-     label.textColor = .darkGray
-     label.translatesAutoresizingMaskIntoConstraints = false
-     
-     return label
-   }()
+    let label = UILabel()
+    label.text = Localization.descriptionName.rawValue
+    label.textAlignment = .left
+    label.font = UIFont(name: Localization.font.rawValue, size: self.textSize)
+    label.textColor = .darkGray
+    label.translatesAutoresizingMaskIntoConstraints = false
+    
+    return label
+  }()
   
   private (set) lazy var dateLabel: UILabel = {
     let label = UILabel()
-    label.text = "DATE:"
+    label.text = Localization.dateLabel.rawValue
     label.textAlignment = .left
-    label.font = UIFont(name: "Apple SD Gothic Neo", size: 18)
+    label.font = UIFont(name: Localization.font.rawValue, size: self.textSize)
     label.textColor = .darkGray
     label.translatesAutoresizingMaskIntoConstraints = false
     
@@ -60,8 +65,8 @@ class DetailViewController: UIViewController {
     textField.borderStyle = .none
     textField.layer.cornerRadius = 5
     textField.layer.masksToBounds = true
-    textField.placeholder = "Enter the task"
-    textField.font = UIFont(name: "Apple SD Gothic Neo", size: 18)
+    textField.placeholder = Localization.taskPlaceholder.rawValue
+    textField.font = UIFont(name: Localization.font.rawValue, size: self.textSize)
     textField.contentVerticalAlignment = .bottom
     textField.textColor = .darkGray
     textField.translatesAutoresizingMaskIntoConstraints = false
@@ -75,8 +80,8 @@ class DetailViewController: UIViewController {
     textField.borderStyle = .none
     textField.layer.cornerRadius = 5
     textField.layer.masksToBounds = true
-    textField.placeholder = "Description here"
-    textField.font = UIFont(name: "Apple SD Gothic Neo", size: 18)
+    textField.placeholder = Localization.descriptionPlaceholder.rawValue
+    textField.font = UIFont(name: Localization.font.rawValue, size: self.textSize)
     textField.contentVerticalAlignment = .bottom
     textField.textColor = .darkGray
     textField.translatesAutoresizingMaskIntoConstraints = false
@@ -90,8 +95,8 @@ class DetailViewController: UIViewController {
     textField.borderStyle = .none
     textField.layer.cornerRadius = 5
     textField.layer.masksToBounds = true
-    textField.placeholder = "Date here"
-    textField.font = UIFont(name: "Apple SD Gothic Neo", size: 18)
+    textField.placeholder = Localization.datePlaceholder.rawValue
+    textField.font = UIFont(name: Localization.font.rawValue, size: self.textSize)
     textField.contentVerticalAlignment = .bottom
     textField.textColor = .darkGray
     textField.translatesAutoresizingMaskIntoConstraints = false
@@ -99,14 +104,13 @@ class DetailViewController: UIViewController {
     return textField
   }()
   
-  private lazy var datePicker: UIDatePicker = {
-      let datePicker = UIDatePicker()
-      datePicker.datePickerMode = .date
-      datePicker.setDate(Date(), animated: true)
-      datePicker.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
-      datePicker.layer.cornerRadius = 20
+  private (set) lazy var datePicker: UIDatePicker = {
+    let datePicker = UIDatePicker()
+    datePicker.datePickerMode = .date
+    datePicker.setDate(Date(), animated: true)
+    datePicker.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
     
-      return datePicker
+    return datePicker
   }()
   
   private (set) lazy var toolBar: UIToolbar = {
@@ -122,11 +126,12 @@ class DetailViewController: UIViewController {
     
     return toolBar
   }()
-//  MARK: - Life Cycle
+  
+  //  MARK: - Life Cycle
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.navigationItem.title = "Detail"
+    self.navigationItem.title = Localization.detailViewControllerTitle.rawValue
     self.view.backgroundColor = .systemGray5
     self.view.addSubview(self.containerView)
     self.containerView.addSubview(self.taskName)
@@ -181,14 +186,29 @@ class DetailViewController: UIViewController {
   
   // MARK: - Actions
   @objc private func saveData() {
+    let newTask = TDLModel(taskName: self.taskTextField.text,
+                           taskDescription: self.descriptionTextField.text,
+                           date: self.dateTextField.text)
     
+    if self.model == nil {
+      self.model = []
+    }
+    
+    if task == nil {
+      self.model?.insert(newTask, at: 0)
+    } else {
+      self.model?[self.indexOfItem] = newTask
+    }
+    
+    delegate?.updateModelWith(data: self.model)
+    self.navigationController?.popViewController(animated: true)
   }
   
   @objc private func doneAction() {
     self.getDateFromPicker()
     self.view.endEditing(true)
   }
-  
+
   // MARK: - Methods
   private func setUpNavigationBar() {
     let save = UIBarButtonItem(barButtonSystemItem: .save,
@@ -199,7 +219,7 @@ class DetailViewController: UIViewController {
   
   private func getDateFromPicker() {
     let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "dd.MM.yyyy"
+    dateFormatter.dateFormat = Localization.dateFormat.rawValue
     dateTextField.text = dateFormatter.string(from: datePicker.date)
   }
 }

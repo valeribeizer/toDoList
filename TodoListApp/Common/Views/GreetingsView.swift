@@ -17,8 +17,8 @@ class GreetingsView: UIView {
   // MARK: - GUI Variables
   private (set) lazy var label: UILabel = {
     let label = UILabel()
-    label.text = "Hello, Flash!"
-    label.font = UIFont(name: "Apple SD Gothic Neo", size: 20)
+    label.text = Localization.greetingsLabel.rawValue
+    label.font = UIFont(name: Localization.font.rawValue, size: 20)
     label.textAlignment = .center
     label.numberOfLines = 0
     label.textColor = .yellow
@@ -30,7 +30,7 @@ class GreetingsView: UIView {
   
   private (set) lazy var accountPhoto: UIImageView = {
     let image = UIImageView()
-    image.image = UIImage(named: "flashIcon")
+    image.image = UIImage(named: Localization.photoName.rawValue)
     image.contentMode = .scaleAspectFill
     image.layer.masksToBounds = true
     image.layer.cornerRadius = 40 
@@ -38,7 +38,6 @@ class GreetingsView: UIView {
 
     return image
   }()
-
 
   // MARK: - Initialization
   override init(frame: CGRect) {

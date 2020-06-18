@@ -8,16 +8,24 @@
 
 import UIKit
 
+protocol TaskDelegate {
+  func updateModelWith(data model: [TDLModel]?)
+}
+
 class TableViewController: UIViewController {
   // MARK: - Variables
-  private var toDoItems: [String] {
+  private var toDoItems: [TDLModel]? {
     set {
-      UserDefaults.standard.set(newValue, forKey: "ToDoKey")
-      UserDefaults.standard.synchronize()
+      if let data = try? JSONEncoder().encode(newValue) {
+        UserDefaults.standard.set(data, forKey: Localization.key.rawValue)
+        UserDefaults.standard.synchronize()
+      }
     }
     get {
-      if let array = UserDefaults.standard.array(forKey: "ToDoKey") as? [String] {
-        return array
+      if let data = UserDefaults.standard.data(forKey: Localization.key.rawValue),
+        let model = try? JSONDecoder().decode([TDLModel]?.self, from: data) {
+        self.toDoItems = model
+        return model
       } else {
         return []
       }
@@ -25,7 +33,7 @@ class TableViewController: UIViewController {
   }
   
   // MARK: - GUI Variables
-  private lazy var tableView: UITableView = {
+  private (set) lazy var tableView: UITableView = {
     let table = UITableView()
     table.delegate = self
     table.dataSource = self
@@ -42,7 +50,7 @@ class TableViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.navigationItem.title = "To Do"
+    self.navigationItem.title = Localization.tableViewControllerTitle.rawValue
     self.view.addSubview(self.tableView)
     
     self.setUpNavigationBar()
@@ -59,27 +67,29 @@ class TableViewController: UIViewController {
     ])
   }
   
-  //  MARK: - Methods
+  // MARK: - Methods
   @objc private func addToModel() {
-    self.toDoItems.insert("", at: 0)
-    self.tableView.performBatchUpdates({
-      self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-    }, completion: nil)
+    let viewController = DetailViewController()
+    viewController.delegate = self
+    viewController.model = toDoItems
+    self.navigationController?.pushViewController(viewController, animated: true)
   }
   
   private func removeFromModel(at index: Int) {
-    self.toDoItems.remove(at: index)
+    self.toDoItems?.remove(at: index)
   }
   
   private func setUpNavigationBar() {
     self.navigationItem.rightBarButtonItem = self.editButtonItem
-    let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.addToModel))
+    let add = UIBarButtonItem(barButtonSystemItem: .add,
+                              target: self,
+                              action: #selector(self.addToModel))
     self.navigationItem.rightBarButtonItems = [self.editButtonItem, add]
   }
 }
 
-// MARK: - UITableViewDelegate, UITableViewDataSource
-extension TableViewController: UITableViewDelegate, UITableViewDataSource {
+  // MARK: - UITableViewDelegate, UITableViewDataSource
+  extension TableViewController: UITableViewDelegate, UITableViewDataSource {
   
   override func setEditing(_ editing: Bool, animated: Bool) {
     super.setEditing(editing, animated: animated)
@@ -87,7 +97,7 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    self.toDoItems.count
+    self.toDoItems?.count ?? 0
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -95,9 +105,9 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource {
       withIdentifier: CustomTableViewCell.reuseIdentifier,
       for: indexPath)
     (cell as? CustomTableViewCell)?.set(
-      title: "Task",
-      description: "Your task here",
-      date: "Enter the date")
+      title: Localization.customCellTitle.rawValue,
+      description: Localization.customCellDescription.rawValue,
+      date: Localization.customCellDate.rawValue)
     cell.selectionStyle = .none
     
     return cell
@@ -105,9 +115,12 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let viewController = DetailViewController()
+    viewController.delegate = self
+    viewController.model = self.toDoItems
+    viewController.task = self.toDoItems?[indexPath.row]
+    viewController.indexOfItem = indexPath.row
     self.navigationController?.pushViewController(viewController, animated: true)
   }
-  
   
   func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
     return true
@@ -115,7 +128,7 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
     if editingStyle == .delete {
-      self.toDoItems.remove(at: indexPath.row)
+      self.toDoItems?.remove(at: indexPath.row)
       self.tableView.deleteRows(at: [indexPath], with: .fade)
     } else if editingStyle == .insert {
       
@@ -129,6 +142,13 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView,
                  moveRowAt sourceIndexPath: IndexPath,
                  to destinationIndexPath: IndexPath) {
-    self.toDoItems.swapAt(sourceIndexPath.row, destinationIndexPath.row)
+    self.toDoItems?.swapAt(sourceIndexPath.row, destinationIndexPath.row)
+  }
+}
+
+extension TableViewController: TaskDelegate {
+  func updateModelWith(data model: [TDLModel]?) {
+    self.toDoItems = model
+    self.tableView.reloadData()
   }
 }

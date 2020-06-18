@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		874A4EE5249BB72500C3F13C /* TDLModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874A4EE4249BB72500C3F13C /* TDLModel.swift */; };
+		874A4F24249C0F7E00C3F13C /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874A4F23249C0F7E00C3F13C /* Localization.swift */; };
 		87501879249646E800D4D5B6 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87501878249646E800D4D5B6 /* DetailViewController.swift */; };
 		DA3750102480170D00DE5A1A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA37500F2480170D00DE5A1A /* AppDelegate.swift */; };
-		DA3750122480170D00DE5A1A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3750112480170D00DE5A1A /* SceneDelegate.swift */; };
 		DA3750142480170D00DE5A1A /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3750132480170D00DE5A1A /* RootViewController.swift */; };
 		DA3750192480170E00DE5A1A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA3750182480170E00DE5A1A /* Assets.xcassets */; };
 		DA37501C2480170E00DE5A1A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA37501A2480170E00DE5A1A /* LaunchScreen.storyboard */; };
@@ -36,10 +37,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		874A4EE4249BB72500C3F13C /* TDLModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TDLModel.swift; sourceTree = "<group>"; };
+		874A4F23249C0F7E00C3F13C /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		87501878249646E800D4D5B6 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		DA37500C2480170D00DE5A1A /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA37500F2480170D00DE5A1A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DA3750112480170D00DE5A1A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DA3750132480170D00DE5A1A /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		DA3750182480170E00DE5A1A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DA37501B2480170E00DE5A1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -63,6 +65,56 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		874A4EE0249B9F3C00C3F13C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DA3750182480170E00DE5A1A /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		874A4EE1249B9F7300C3F13C /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				DA37502B248036D300DE5A1A /* Views */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		874A4EE2249B9F9500C3F13C /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				874A4EE6249BC02600C3F13C /* Model */,
+				DA375026248023D700DE5A1A /* Cells */,
+				DA375025248023CA00DE5A1A /* ViewContollers */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		874A4EE3249B9FC700C3F13C /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				DA37501D2480170E00DE5A1A /* Info.plist */,
+			);
+			path = Configurations;
+			sourceTree = "<group>";
+		};
+		874A4EE6249BC02600C3F13C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				874A4EE4249BB72500C3F13C /* TDLModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		874A4F22249C0F4D00C3F13C /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				874A4F23249C0F7E00C3F13C /* Localization.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
 		DA3750032480170D00DE5A1A = {
 			isa = PBXGroup;
 			children = (
@@ -83,15 +135,14 @@
 		DA37500E2480170D00DE5A1A /* TodoListApp */ = {
 			isa = PBXGroup;
 			children = (
-				DA37500F2480170D00DE5A1A /* AppDelegate.swift */,
-				DA3750112480170D00DE5A1A /* SceneDelegate.swift */,
+				874A4EE3249B9FC700C3F13C /* Configurations */,
+				874A4EE1249B9F7300C3F13C /* Common */,
+				874A4F22249C0F4D00C3F13C /* Enums */,
 				DAC68E3124855C6A008F28FF /* Extensions */,
-				DA37502B248036D300DE5A1A /* Views */,
-				DA375026248023D700DE5A1A /* Cells */,
-				DA375025248023CA00DE5A1A /* ViewContollers */,
-				DA3750182480170E00DE5A1A /* Assets.xcassets */,
+				874A4EE2249B9F9500C3F13C /* Features */,
+				874A4EE0249B9F3C00C3F13C /* Resources */,
+				DA37500F2480170D00DE5A1A /* AppDelegate.swift */,
 				DA37501A2480170E00DE5A1A /* LaunchScreen.storyboard */,
-				DA37501D2480170E00DE5A1A /* Info.plist */,
 			);
 			path = TodoListApp;
 			sourceTree = "<group>";
@@ -231,12 +282,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				874A4EE5249BB72500C3F13C /* TDLModel.swift in Sources */,
 				DA37502424801F0C00DE5A1A /* TableViewController.swift in Sources */,
+				874A4F24249C0F7E00C3F13C /* Localization.swift in Sources */,
 				DA3750142480170D00DE5A1A /* RootViewController.swift in Sources */,
 				DAC68E3324855C87008F28FF /* UIEdgeInsets+Ex.swift in Sources */,
 				DA3750102480170D00DE5A1A /* AppDelegate.swift in Sources */,
 				DA375028248023FB00DE5A1A /* CustomTableViewCell.swift in Sources */,
-				DA3750122480170D00DE5A1A /* SceneDelegate.swift in Sources */,
 				DA37502D248036EF00DE5A1A /* GreetingsView.swift in Sources */,
 				87501879249646E800D4D5B6 /* DetailViewController.swift in Sources */,
 			);
@@ -380,7 +432,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = TodoListApp/Info.plist;
+				INFOPLIST_FILE = TodoListApp/Configurations/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -402,7 +454,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = TodoListApp/Info.plist;
+				INFOPLIST_FILE = TodoListApp/Configurations/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

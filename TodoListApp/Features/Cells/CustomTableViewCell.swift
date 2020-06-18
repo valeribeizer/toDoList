@@ -14,45 +14,46 @@ class CustomTableViewCell: UITableViewCell {
   private let edgeInsets = UIEdgeInsets(all: 20)
   private let contentEdgeInsets = UIEdgeInsets(all: 10)
   private let radius: CGFloat = 10
+  private let sizeOfTitle: CGFloat = 20
+  private let fontSize: CGFloat = 15
   
   static let reuseIdentifier: String = "CustomTableViewCell"
   
   // MARK: - GUI Variables
-  private let containerView: UIView = {
+  private (set) lazy var containerView: UIView = {
     let view = UIView()
-    view.backgroundColor = UIColor(named: "lightYellow")
+    view.backgroundColor = UIColor(named: Localization.customColor.rawValue)
     view.translatesAutoresizingMaskIntoConstraints = false
     
     return view
   }()
   
-  private let taskTitle: UILabel = {
+  private (set) lazy var taskTitle: UILabel = {
     let label = UILabel()
-    label.font = UIFont(name: "Apple SD Gothic Neo", size: 20)
+    label.font = UIFont(name: Localization.font.rawValue, size: self.sizeOfTitle)
     label.textColor = .black
     label.translatesAutoresizingMaskIntoConstraints = false
-
+    
     return label
   }()
   
-  private let taskDescription: UILabel = {
+  private (set) lazy var taskDescription: UILabel = {
     let label = UILabel()
     label.numberOfLines = 0
-    label.font = UIFont(name: "Apple SD Gothic Neo", size: 15)
+    label.font = UIFont(name: Localization.font.rawValue, size: self.fontSize)
     label.textColor = .darkGray
     label.translatesAutoresizingMaskIntoConstraints = false
     
     return label
   }()
   
-  private let taskDate: UILabel = {
+  private (set) lazy var taskDate: UILabel = {
     let label = UILabel()
-    label.font = UIFont(name: "Apple SD Gothic Neo", size: 15)
+    label.font = UIFont(name: Localization.font.rawValue, size: self.fontSize)
     label.translatesAutoresizingMaskIntoConstraints = false
     
     return label
   }()
-  
   
   // MARK: - Initialization
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
