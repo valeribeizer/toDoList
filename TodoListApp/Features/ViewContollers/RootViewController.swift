@@ -9,10 +9,14 @@
 import UIKit
 
 class RootViewController: UIViewController {
+  // MARK: - Variables
+  private let navigationItemTitle = "Welcome"
+  private let buttonTitle = "Continue"
+  
   // MARK: - GUI Variables
   private (set) lazy var customView: GreetingsView = {
     let view = GreetingsView()
-    view.backgroundColor = .init(red: 0.9, green: 0.5, blue: 0.4, alpha: 1)
+    view.backgroundColor = .white
     view.translatesAutoresizingMaskIntoConstraints = false
     
     return view
@@ -20,9 +24,11 @@ class RootViewController: UIViewController {
   
   private (set) lazy var continueButton: UIButton = {
     let button = UIButton()
-    button.setTitle(Localization.buttonTitle.rawValue, for: .normal)
-    button.setTitleColor(.darkGray, for: .normal)
-    button.backgroundColor = .systemYellow
+    button.setTitle(self.buttonTitle, for: .normal)
+    button.setTitleColor(.white, for: .normal)
+    button.backgroundColor = .darkGray
+    button.layer.cornerRadius = 10
+    button.layer.masksToBounds = true
     button.addTarget(self,
                      action: #selector(self.continueButtonPressed),
                      for: .touchUpInside)
@@ -35,7 +41,7 @@ class RootViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.navigationItem.title = Localization.rootViewControllerTitle.rawValue
+    self.navigationItem.title = self.navigationItemTitle
     self.view.backgroundColor = .systemGray5
     self.view.addSubview(self.customView)
     self.view.addSubview(self.continueButton)

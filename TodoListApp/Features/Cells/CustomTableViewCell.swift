@@ -11,28 +11,27 @@ import SnapKit
 
 class CustomTableViewCell: UITableViewCell {
   // MARK: - Variables
+  static let reuseIdentifier: String = "CustomTableViewCell"
+  
   private let edgeInsets = UIEdgeInsets(all: 20)
   private let contentEdgeInsets = UIEdgeInsets(all: 10)
   private let radius: CGFloat = 10
   private let sizeOfTitle: CGFloat = 20
   private let fontSize: CGFloat = 15
   
-  static let reuseIdentifier: String = "CustomTableViewCell"
-  
   // MARK: - GUI Variables
   private (set) lazy var containerView: UIView = {
     let view = UIView()
-    view.backgroundColor = UIColor(named: Localization.customColor.rawValue)
-    view.translatesAutoresizingMaskIntoConstraints = false
+    view.backgroundColor = .white
     
     return view
   }()
   
   private (set) lazy var taskTitle: UILabel = {
     let label = UILabel()
-    label.font = UIFont(name: Localization.font.rawValue, size: self.sizeOfTitle)
+    label.font = UIFont(name: "Apple SD Gothic Neo", size: self.fontSize)
     label.textColor = .black
-    label.translatesAutoresizingMaskIntoConstraints = false
+    label.numberOfLines = 0
     
     return label
   }()
@@ -40,17 +39,15 @@ class CustomTableViewCell: UITableViewCell {
   private (set) lazy var taskDescription: UILabel = {
     let label = UILabel()
     label.numberOfLines = 0
-    label.font = UIFont(name: Localization.font.rawValue, size: self.fontSize)
+    label.font = UIFont(name: "Apple SD Gothic Neo", size: self.fontSize)
     label.textColor = .darkGray
-    label.translatesAutoresizingMaskIntoConstraints = false
     
     return label
   }()
   
   private (set) lazy var taskDate: UILabel = {
     let label = UILabel()
-    label.font = UIFont(name: Localization.font.rawValue, size: self.fontSize)
-    label.translatesAutoresizingMaskIntoConstraints = false
+    label.font = UIFont(name: "Apple SD Gothic Neo", size: self.fontSize)
     
     return label
   }()
@@ -78,23 +75,24 @@ class CustomTableViewCell: UITableViewCell {
   
   // MARK: - Constraints
   private func setUpConstraints() {
-    self.containerView.snp.updateConstraints { (make) in
-      make.top.equalToSuperview().inset(40)
-      make.left.right.bottom.equalToSuperview().inset(self.edgeInsets)
+    self.containerView.snp.makeConstraints { (make) in
+      make.top.left.right.bottom.equalToSuperview().inset(self.contentEdgeInsets)
     }
-    
-    self.taskTitle.snp.updateConstraints { (make) in
-      make.top.left.equalToSuperview().inset(self.contentEdgeInsets)
+    self.taskTitle.snp.contentCompressionResistanceHorizontalPriority = 1000
+    self.taskTitle.snp.makeConstraints { (make) in
+      make.left.top.equalToSuperview().inset(self.edgeInsets)
+      make.right.equalTo(self.containerView.snp.right).inset(10)
     }
-    
-    self.taskDescription.snp.updateConstraints { (make) in
-      make.top.equalTo(self.taskTitle.snp.bottom).offset(10)
-      make.left.equalToSuperview().inset(self.contentEdgeInsets)
+    self.taskDescription.snp.contentCompressionResistanceHorizontalPriority = 250
+    self.taskDescription.snp.makeConstraints { (make) in
+      make.top.equalTo(self.taskTitle.snp.bottom).offset(self.edgeInsets.top)
+      make.left.bottom.equalToSuperview().inset(self.edgeInsets)
     }
-    
-    self.taskDate.snp.updateConstraints { (make) in
-      make.top.equalTo(self.taskDescription.snp.bottom).offset(10)
-      make.left.bottom.equalToSuperview().inset(self.contentEdgeInsets)
+    self.taskDate.snp.makeConstraints { (make) in
+      make.top.greaterThanOrEqualTo(self.taskDescription.snp.top)
+      make.left.greaterThanOrEqualTo(self.taskDescription.snp.right).offset(10)
+      make.right.equalToSuperview().inset(self.edgeInsets)
+      make.bottom.equalToSuperview().inset(self.edgeInsets)
     }
   }
   
@@ -110,14 +108,14 @@ class CustomTableViewCell: UITableViewCell {
     
     self.containerView.layer.cornerRadius = self.radius
     self.containerView.layer.borderWidth = 1
-    self.containerView.layer.borderColor = UIColor.systemYellow.cgColor
+    self.containerView.layer.borderColor = UIColor.systemBlue.cgColor
   }
   
   // MARK: - Setter
-  func set(title: String, description: String, date: String) {
-    self.taskTitle.text = title
-    self.taskDescription.text = description
-    self.taskDate.text = date
+  func setUpCell(task: TDLModel) {
+    self.taskTitle.text = task.taskName
+    self.taskDescription.text = task.taskDescription
+    self.taskDate.text = task.date
     
     self.setNeedsUpdateConstraints()
   }
